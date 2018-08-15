@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2035
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Indelible", "Indelible\Indelible.csproj", "{205CF789-F744-40C3-AA88-A4B797C3ADB0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{205CF789-F744-40C3-AA88-A4B797C3ADB0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{205CF789-F744-40C3-AA88-A4B797C3ADB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{205CF789-F744-40C3-AA88-A4B797C3ADB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{205CF789-F744-40C3-AA88-A4B797C3ADB0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {72250969-FE3D-4BDA-B33D-ED31033ABB8F}
+	EndGlobalSection
+EndGlobal
