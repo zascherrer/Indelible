@@ -10,6 +10,10 @@ namespace Indelible.Controllers
     {
         public ActionResult Index()
         {
+            if (User.IsInRole("Publisher"))
+            {
+                return RedirectToAction("Index", "Publisher");
+            }
             return View();
         }
 

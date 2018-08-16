@@ -9540,3 +9540,8 @@ a.text-dark:hover, a.text-dark:focus {
 .pagination a:hover {
   text-decoration: none;
 }
+
+body {
+    padding: 0px;
+    margin: 0px;
+}

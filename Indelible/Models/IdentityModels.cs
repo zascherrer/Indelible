@@ -29,5 +29,8 @@ namespace Indelible.Models
         {
             return new ApplicationDbContext();
         }
+
+        public DbSet<Document> Documents { get; set; }
+
     }
 }
