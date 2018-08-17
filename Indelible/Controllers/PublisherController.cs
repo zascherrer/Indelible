@@ -27,19 +27,21 @@ namespace Indelible.Controllers
 
         public ActionResult Upload()
         {
-            return View();
+            DocumentFile documentFile = new DocumentFile();
+
+            return View(documentFile);
         }
 
         [HttpPost]
-        public async Task<ActionResult> Upload([Bind(Include =("Id,Title"))] Document document)
+        public async Task<ActionResult> Upload([Bind(Include =("Id,Title"))] Document document, HttpPostedFileBase file)
         {
             Document newDocument = new Document { Id = document.Id, Title = document.Title };
 
-            string filepath = "test.txt";
+            string filepath = System.IO.Path.GetFullPath(file.FileName);
             MemoryStream mStream = new MemoryStream(Encoding.UTF8.GetBytes(filepath));
-            IpfsStream file = new IpfsStream(filepath, mStream);
+            IpfsStream fileIpfs = new IpfsStream(filepath, mStream);
             IpfsClient ipfs = new IpfsClient();
-            MerkleNode node = await ipfs.Add(file);
+            MerkleNode node = await ipfs.Add(fileIpfs);
 
             newDocument.Hash = node.Hash.ToString();
             newDocument.UserId = User.Identity.GetUserId();
@@ -50,5 +52,22 @@ namespace Indelible.Controllers
 
             return View();
         }
+
+        //[HttpPost]
+        //public ActionResult EditBanner1(HomeInfo info, HttpPostedFileBase file1)
+        //{
+        //    var homePage = db.homeInfos.Select(h => h).FirstOrDefault();
+        //    if (file1 != null)
+        //    {
+        //        string pic = System.IO.Path.GetFileName(file1.FileName);
+        //        string path = System.IO.Path.Combine(
+        //                               Server.MapPath("~/Content"), pic);
+        //        file1.SaveAs(path);
+        //        homePage.SliderPic1 = "/Content/" + pic;
+        //    }
+        //    db.SaveChanges();
+        //    return RedirectToAction("Upload");
+
+        //}
     }
 }
