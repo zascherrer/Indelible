@@ -59,6 +59,10 @@ html {
   -webkit-tap-highlight-color: transparent;
 }
 
+.navbar-collapse.collapse.in {
+    display: block !important;
+}
+
 @-ms-viewport {
   width: device-width;
 }
