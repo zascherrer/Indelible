@@ -1,0 +1,65 @@
+﻿@model Indelible.Models.Document
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+
+        <dt>
+            Username
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UserName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+
+        <dt>
+            Contract Address
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ContractAddress)
+        </dd>
+
+        <dt>
+            Document Hash
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Hash)
+        </dd>
+
+        <dt>
+            Time Stamp
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TimeStamp)
+        </dd>
+
+        <dt>
+            Public
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsPublic)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Back to List", "Index", new { UserName = Model.UserName})
+</p>

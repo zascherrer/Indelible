@@ -23,10 +23,22 @@ namespace Indelible.Controllers
         Web3 web3;
 
         // GET: Publisher
-        public ActionResult Index()
+        public ActionResult Index(string UserName)
         {
-            string userId = User.Identity.GetUserId();
-            List<Document> documents = db.Documents.Where(d => d.UserId == userId).ToList();
+            List<Document> documents = new List<Document>();
+            if (UserName == null)
+            {
+                UserName = User.Identity.GetUserName();
+                documents = db.Documents.Where(d => d.UserName == UserName).ToList();
+            }
+            else if (User.Identity.GetUserName() == UserName)
+            {
+                documents = db.Documents.Where(d => d.UserName == UserName).ToList();
+            }
+            else
+            {
+                documents = db.Documents.Where(d => d.UserName == UserName && d.IsPublic == true).ToList();
+            }
 
             return View(documents);
         }
@@ -39,12 +51,13 @@ namespace Indelible.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Upload([Bind(Include =("Id,Title"))] Document document, HttpPostedFileBase file)
+        public async Task<ActionResult> Upload([Bind(Include =("Id,Title,IsPublic"))] Document document, HttpPostedFileBase file)
         {
-            Document newDocument = new Document { Id = document.Id, Title = document.Title };
+            Document newDocument = new Document { Id = document.Id, Title = document.Title, IsPublic = document.IsPublic, TimeStamp = DateTime.Now };
 
             string filepath = System.IO.Path.GetFullPath(file.FileName);
-            MemoryStream mStream = new MemoryStream(Encoding.UTF8.GetBytes(filepath));
+            BinaryReader binary = new BinaryReader(file.InputStream);
+            MemoryStream mStream = new MemoryStream(binary.ReadBytes(file.ContentLength));
             IpfsStream fileIpfs = new IpfsStream(filepath, mStream);
             IpfsClient ipfs = new IpfsClient();
             MerkleNode node = await ipfs.Add(fileIpfs);
@@ -52,13 +65,14 @@ namespace Indelible.Controllers
             newDocument.Hash = node.Hash.ToString();
             newDocument.UserId = User.Identity.GetUserId();
             newDocument.UserName = db.Users.Where(u => u.Id == newDocument.UserId).FirstOrDefault().UserName;
+            
+            ContractReceipt receipt = await AddContractToEthereum(newDocument.Hash);
+            newDocument.ContractAddress = receipt.ContractAddress;
 
             db.Documents.Add(newDocument);
-            ContractReceipt receipt = await AddContractToEthereum(newDocument.Hash);
-
             db.SaveChanges();
 
-            return View();
+            return RedirectToAction("Index", new { newDocument.UserName });
         }
 
         public ActionResult Details(int id)
@@ -70,7 +84,14 @@ namespace Indelible.Controllers
 
         public async Task<ActionResult> Download(int id)
         {
-            return View();
+            Document document = db.Documents.Find(id);
+            IpfsClient ipfs = new IpfsClient();
+            Stream stream = await ipfs.Cat(document.Hash);
+            FileStream fileStream = new FileStream("C:\\Users\\zsche\\Documents\\IPFS\\test.txt", FileMode.Create);
+            stream.CopyTo(fileStream);
+            fileStream.Close();
+                
+            return View(document);
         }
 
         public async Task<ContractReceipt> AddContractToEthereum(string hash)

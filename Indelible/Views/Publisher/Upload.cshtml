@@ -10,82 +10,41 @@
 
 <h2>Upload</h2>
 
-@*<script>
-    //from json-stringify-safe
-    function stringify(obj, replacer, spaces, cycleReplacer) {
-        return JSON.stringify(obj, serializer(replacer, cycleReplacer), spaces)
-    }
-    function serializer(replacer, cycleReplacer) {
-        var stack = [], keys = []
-
-        if (cycleReplacer == null) cycleReplacer = function (key, value) {
-            if (stack[0] === value) return "[Circular ~]"
-            return "[Circular ~." + keys.slice(0, stack.indexOf(value)).join(".") + "]"
-        }
-
-        return function (key, value) {
-            if (stack.length > 0) {
-                var thisPos = stack.indexOf(this)
-                ~thisPos ? stack.splice(thisPos + 1) : stack.push(this)
-                ~thisPos ? keys.splice(thisPos, Infinity, key) : keys.push(key)
-                if (~stack.indexOf(value)) value = cycleReplacer.call(this, key, value)
-            }
-            else stack.push(value)
-
-            return replacer == null ? value : replacer.call(this, key, value)
-        }
-    }
-
-    if (typeof web3 !== 'undefined') {
-        web3 = new Web3(web3.currentProvider);
-
-    } else {
-        web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
-    }
-
-    $.ajax({
-        url: "@Url.Action("AssignWeb3", "Publisher")",
-        type: "POST",
-        contentType: "application/json",
-        data: stringify({ Web3: web3 }, function (error, result) {
-            if (!error)
-                var x = 1 // this is just so I don't get an error
-                //console.log(JSON.stringify(result));
-            else
-                console.error(error);
-        })
-    });
-
-</script>*@
-
 
 @using (Html.BeginForm("Upload", "Publisher", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
 
-    <div class="form-horizontal">
-        <h4>Document</h4>
-        <hr />
+<div class="form-horizontal">
+    <h4>Document</h4>
+    <hr />
 
 
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Document.Title, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Document.Title, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Document.Title, "", new { @class = "text-danger" })
-            </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Document.Title, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Document.Title, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Document.Title, "", new { @class = "text-danger" })
         </div>
-        @Html.TextBoxFor(model => model.File, new { type = "file" })
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Upload" class="btn btn-default" />
-            </div>
-        </div>
-
     </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Document.IsPublic, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Document.IsPublic, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Document.IsPublic, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    @Html.TextBoxFor(model => model.File, new { type = "file" })
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Upload" class="btn btn-default" />
+        </div>
+    </div>
+
+</div>
 
 }
 
