@@ -3,6 +3,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin;
 using Owin;
 using Indelible.Models;
+using System.Collections.Generic;
 
 [assembly: OwinStartupAttribute(typeof(Indelible.Startup))]
 namespace Indelible
@@ -13,6 +14,7 @@ namespace Indelible
         {
             ConfigureAuth(app);
             CreateRolesandUsers();
+            //SeedContractReceipts();
         }
 
         // In this method we will create default User roles and Admin user for login
@@ -32,5 +34,16 @@ namespace Indelible
             }
             
         }
-    }
+
+        //private void SeedContractReceipts()
+        //{
+        //    Dictionary<string, Nethereum.RPC.Eth.DTOs.TransactionReceipt> Contracts = new Dictionary<string, Nethereum.RPC.Eth.DTOs.TransactionReceipt>();
+        //    ContractReceiptDictionary ContractReceiptsDict = new ContractReceiptDictionary() { ContractReceipts = Contracts };
+        //    ContractReceipt ContractReceipts = new ContractReceipt() { Contracts = ContractReceiptsDict };
+        //    ApplicationDbContext db = new ApplicationDbContext();
+
+        //    db.ContractReceipts.Add(ContractReceipts);
+        //    db.SaveChanges();
+        //}
+}
 }

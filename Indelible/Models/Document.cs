@@ -17,5 +17,8 @@ namespace Indelible.Models
         public string UserId { get; set; }
         public ApplicationUser ApplicationUser { get; set; }
         public string UserName { get; set; }
+        public string ContractAddress { get; set; }
+        public DateTime TimeStamp { get; set; }
+        public bool IsPublic { get; set; }
     }
 }

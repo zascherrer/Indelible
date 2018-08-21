@@ -31,6 +31,7 @@ namespace Indelible.Models
         }
 
         public DbSet<Document> Documents { get; set; }
+        public DbSet<ContractReceipt> ContractReceipts { get; set; }
 
     }
 }

@@ -22,6 +22,9 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="ContractStorage.sol">
+      <SubType>Content</SubType>
+    </Content>
     <Content Include="samples\Payout.sol" />
     <Content Include="samples\SimpleDataFeed.sol" />
     <Content Include="samples\SimpleStorage.sol" />
