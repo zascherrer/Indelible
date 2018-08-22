@@ -20,5 +20,6 @@ namespace Indelible.Models
         public string ContractAddress { get; set; }
         public DateTime TimeStamp { get; set; }
         public bool IsPublic { get; set; }
+        public string FileExtension { get; set; }
     }
 }

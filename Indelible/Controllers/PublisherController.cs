@@ -14,6 +14,7 @@ using System.Net.Http;
 using Nethereum.HdWallet;
 using System.Numerics;
 using Nethereum.Hex.HexTypes;
+using System.Net.Mail;
 
 namespace Indelible.Controllers
 {
@@ -65,6 +66,7 @@ namespace Indelible.Controllers
             newDocument.Hash = node.Hash.ToString();
             newDocument.UserId = User.Identity.GetUserId();
             newDocument.UserName = db.Users.Where(u => u.Id == newDocument.UserId).FirstOrDefault().UserName;
+            newDocument.FileExtension = Path.GetExtension(filepath);
             
             ContractReceipt receipt = await AddContractToEthereum(newDocument.Hash);
             newDocument.ContractAddress = receipt.ContractAddress;
@@ -87,11 +89,56 @@ namespace Indelible.Controllers
             Document document = db.Documents.Find(id);
             IpfsClient ipfs = new IpfsClient();
             Stream stream = await ipfs.Cat(document.Hash);
-            FileStream fileStream = new FileStream("C:\\Users\\zsche\\Documents\\IPFS\\test.txt", FileMode.Create);
+            FileStream fileStream = new FileStream("C:\\Users\\zsche\\Documents\\IPFS\\" + document.Hash + document.FileExtension, FileMode.Create);
             stream.CopyTo(fileStream);
             fileStream.Close();
-                
+            
             return View(document);
+        }
+
+        public ActionResult EmailDocument(int id)
+        {
+            Document document = db.Documents.Find(id);
+            DocumentEmail documentEmail = new DocumentEmail() { Document = document, Email = new Email()};
+            return View(documentEmail);
+        }
+
+        [HttpPost]
+        public ActionResult EmailDocument(int id, [Bind(Include =("Document,Email"))] DocumentEmail documentEmail)
+        {
+            Document document = documentEmail.Document;
+            Email emailEntered = documentEmail.Email;
+            try
+            {
+                //Document document = db.Documents.Find(id);
+                Email email = new Email { Subject = emailEntered.Subject, Message = emailEntered.Message, RecipientEmail = emailEntered.RecipientEmail };
+                email.SenderEmail = "indelible.documents@gmail.com";
+                email.SenderPassword = MyKeys.EMAIL_PASSWORD;
+
+                MailMessage mail = new MailMessage();
+                SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
+
+                mail.From = new MailAddress(email.SenderEmail);
+                mail.To.Add(email.RecipientEmail);
+                mail.Subject = email.Subject;
+                mail.Body = email.Message + "\n\nClick this link to download the file!\n" + "http://localhost:54131/Publisher/Download/" + document.Id;
+
+                SmtpServer.Port = 587;
+                SmtpServer.Credentials = new System.Net.NetworkCredential(email.SenderEmail, email.SenderPassword);
+                SmtpServer.EnableSsl = true;
+
+                SmtpServer.Send(mail);
+
+                ViewBag.Message = "The email has been sent successfully!";
+
+                return View();
+            }
+            catch
+            {
+                ViewBag.Message = "The email failed to send.";
+
+                return View();
+            }
         }
 
         public async Task<ContractReceipt> AddContractToEthereum(string hash)

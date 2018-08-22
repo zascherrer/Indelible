@@ -300,11 +300,21 @@
     <Compile Include="Migrations\201808211311149_UpdatedDocumentsMigration.Designer.cs">
       <DependentUpon>201808211311149_UpdatedDocumentsMigration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201808221232090_FileExtensionAndEmailMigration.cs" />
+    <Compile Include="Migrations\201808221232090_FileExtensionAndEmailMigration.Designer.cs">
+      <DependentUpon>201808221232090_FileExtensionAndEmailMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201808221234347_ActualEmailMigration.cs" />
+    <Compile Include="Migrations\201808221234347_ActualEmailMigration.Designer.cs">
+      <DependentUpon>201808221234347_ActualEmailMigration.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ContractReceipt.cs" />
     <Compile Include="Models\Document.cs" />
+    <Compile Include="Models\DocumentEmail.cs" />
     <Compile Include="Models\DocumentFile.cs" />
+    <Compile Include="Models\Email.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="MyKeys.cs" />
@@ -377,6 +387,7 @@
     <Content Include="Views\Publisher\Upload.cshtml" />
     <Content Include="Views\Publisher\Details.cshtml" />
     <Content Include="Views\Publisher\Download.cshtml" />
+    <Content Include="Views\Publisher\EmailDocument.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -418,6 +429,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201808211311149_UpdatedDocumentsMigration.resx">
       <DependentUpon>201808211311149_UpdatedDocumentsMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808221232090_FileExtensionAndEmailMigration.resx">
+      <DependentUpon>201808221232090_FileExtensionAndEmailMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808221234347_ActualEmailMigration.resx">
+      <DependentUpon>201808221234347_ActualEmailMigration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
