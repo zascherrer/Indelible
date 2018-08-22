@@ -386,8 +386,9 @@
     <Content Include="Views\Publisher\Index.cshtml" />
     <Content Include="Views\Publisher\Upload.cshtml" />
     <Content Include="Views\Publisher\Details.cshtml" />
-    <Content Include="Views\Publisher\Download.cshtml" />
+    <Content Include="Views\Publisher\DownloadConfirmed.cshtml" />
     <Content Include="Views\Publisher\EmailDocument.cshtml" />
+    <Content Include="Views\Publisher\Download.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

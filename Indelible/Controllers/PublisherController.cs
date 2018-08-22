@@ -41,6 +41,15 @@ namespace Indelible.Controllers
                 documents = db.Documents.Where(d => d.UserName == UserName && d.IsPublic == true).ToList();
             }
 
+            if (documents.Count > 0)
+            {
+                ViewBag.Author = documents[0].UserName;
+            }
+            else
+            {
+                ViewBag.Author = "There doesn't seem to be anything here yet";
+            }
+
             return View(documents);
         }
 
@@ -60,7 +69,7 @@ namespace Indelible.Controllers
             BinaryReader binary = new BinaryReader(file.InputStream);
             MemoryStream mStream = new MemoryStream(binary.ReadBytes(file.ContentLength));
             IpfsStream fileIpfs = new IpfsStream(filepath, mStream);
-            IpfsClient ipfs = new IpfsClient();
+            IpfsClient ipfs = new IpfsClient("https://ipfs.infura.io:5001");
             MerkleNode node = await ipfs.Add(fileIpfs);
 
             newDocument.Hash = node.Hash.ToString();
@@ -84,16 +93,24 @@ namespace Indelible.Controllers
             return View(document);
         }
 
-        public async Task<ActionResult> Download(int id)
+        public ActionResult Download(int id)
         {
             Document document = db.Documents.Find(id);
-            IpfsClient ipfs = new IpfsClient();
+
+            return View(document);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Download(int id, string differentSignature)
+        {
+            Document document = db.Documents.Find(id);
+            IpfsClient ipfs = new IpfsClient("https://ipfs.infura.io:5001");
             Stream stream = await ipfs.Cat(document.Hash);
             FileStream fileStream = new FileStream("C:\\Users\\zsche\\Documents\\IPFS\\" + document.Hash + document.FileExtension, FileMode.Create);
             stream.CopyTo(fileStream);
             fileStream.Close();
             
-            return View(document);
+            return View("DownloadConfirmed", document);
         }
 
         public ActionResult EmailDocument(int id)

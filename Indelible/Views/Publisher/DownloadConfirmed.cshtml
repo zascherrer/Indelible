@@ -1,0 +1,14 @@
+﻿@model Indelible.Models.Document
+
+@{
+    ViewBag.Title = "Download";
+}
+
+<h2>Your file has been downloaded!</h2>
+
+<h4>Thank you for using Indelible!</h4>
+<br />
+<p>
+    @Html.ActionLink("Back to List", "Index", new { UserName = Model.UserName })
+</p>
+
