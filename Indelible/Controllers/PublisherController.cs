@@ -21,7 +21,6 @@ namespace Indelible.Controllers
     public class PublisherController : Controller
     {
         ApplicationDbContext db = new ApplicationDbContext();
-        Web3 web3;
 
         // GET: Publisher
         public ActionResult Index(string UserName)
@@ -186,11 +185,6 @@ namespace Indelible.Controllers
             var receiptFirstSend = await sendHashFunction.SendTransactionAndWaitForReceiptAsync(senderAddress, null, hash);
 
             return contractReceipt;
-        }
-
-        public void AssignWeb3(Web3 web3)
-        {
-            this.web3 = web3;
         }
 
         
